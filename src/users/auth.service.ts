@@ -17,6 +17,8 @@ export class AuthService {
     const hash = await scrypt(password, salt, 32);
     //combine hash and salt
     const result = salt + '.' + hash.toString();
+    const user = await this.userService.create(email, result);
+    return user;
   }
   signin() {}
 }

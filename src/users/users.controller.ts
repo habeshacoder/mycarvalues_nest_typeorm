@@ -29,7 +29,6 @@ export class UsersController {
   @UseInterceptors(SerializerInterceptor)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    console.log('running handler');
     return this.usersserv.findOne(parseInt(id));
   }
   @Delete(':id')

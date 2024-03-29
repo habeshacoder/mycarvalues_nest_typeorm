@@ -5,9 +5,12 @@ import {
   ExecutionContext,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { GetUserDto } from 'src/users/dtos/get-user.dto';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+export function serializer(dto: any) {
+  return UseInterceptors(new SerializerInterceptor(dto));
+}
 export class SerializerInterceptor implements NestInterceptor {
   constructor(private dto: any) {}
   intercept(context: ExecutionContext, handler: CallHandler): Observable<any> {

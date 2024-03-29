@@ -9,7 +9,7 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { SerializerInterceptor } from '../interceptors/serializer.interceptor';
+import { serializer } from '../interceptors/serializer.interceptor';
 import { UserDto } from './dtos/users.dto';
 import { UsersService } from './users.service';
 import { get } from 'http';
@@ -17,6 +17,7 @@ import { UPdateUserDto } from './dtos/update-user.dro';
 import { GetUserDto } from 'src/users/dtos/get-user.dto';
 
 @Controller('users')
+@serializer(GetUserDto)
 export class UsersController {
   constructor(private usersserv: UsersService) {}
 
@@ -28,7 +29,7 @@ export class UsersController {
   find(@Query('email') email: string) {
     return this.usersserv.find(email);
   }
-  @UseInterceptors(new SerializerInterceptor(GetUserDto))
+  // @serializer(GetUserDto)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersserv.findOne(parseInt(id));

@@ -10,7 +10,7 @@ import {
   Post,
   Query,
   Session,
-  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { serializer } from '../interceptors/serializer.interceptor';
 import { UserDto } from './dtos/users.dto';
@@ -20,10 +20,9 @@ import { GetUserDto } from 'src/users/dtos/get-user.dto';
 import { AuthService } from './auth.service';
 import { HEADERS_METADATA } from '@nestjs/common/constants';
 import { CurrentUser } from './decorators/current-use.decorator';
-import { CurrentUserInterceptors } from './interceptors/current-user.interceptor';
+import { AuthGuard } from './guards/auth.guard';
 @Controller('users')
 @serializer(GetUserDto)
-@UseInterceptors(CurrentUserInterceptors)
 export class UsersController {
   constructor(
     private usersserv: UsersService,
@@ -60,6 +59,7 @@ export class UsersController {
     return users;
   }
   @Get('me')
+  @UseGuards(AuthGuard)
   getMe(@CurrentUser() user: any) {
     return user;
   }

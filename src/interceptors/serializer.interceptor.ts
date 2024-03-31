@@ -11,9 +11,11 @@ import { map } from 'rxjs/operators';
 export function serializer(dto: any) {
   return UseInterceptors(new SerializerInterceptor(dto));
 }
+
 export class SerializerInterceptor implements NestInterceptor {
   constructor(private dto: any) {}
   intercept(context: ExecutionContext, handler: CallHandler): Observable<any> {
+    //handle out going responses
     return handler.handle().pipe(
       map((data: any) => {
         return plainToClass(this.dto, data, {

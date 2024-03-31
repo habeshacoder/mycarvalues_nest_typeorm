@@ -7,6 +7,8 @@ import { ReportsModule } from './reports/reports.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/users.entity';
 import { Report } from './reports/reports.entity';
+import { CurrentUserInterceptors } from './users/interceptors/current-user.interceptor';
+import { UsersService } from './users/users.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({

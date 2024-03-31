@@ -19,8 +19,11 @@ import { UPdateUserDto } from './dtos/update-user.dro';
 import { GetUserDto } from 'src/users/dtos/get-user.dto';
 import { AuthService } from './auth.service';
 import { HEADERS_METADATA } from '@nestjs/common/constants';
+import { CurrentUser } from './decorators/current-use.decorator';
+import { CurrentUserInterceptors } from './interceptors/current-user.interceptor';
 @Controller('users')
 @serializer(GetUserDto)
+@UseInterceptors(CurrentUserInterceptors)
 export class UsersController {
   constructor(
     private usersserv: UsersService,
@@ -54,10 +57,15 @@ export class UsersController {
     if (users instanceof BadRequestException) {
       return users; // Return the BadRequestException if it was thrown
     }
+    return users;
   }
   @Get('me')
-  getMe(@Session() session: any) {
-    return this.usersserv.findOne(session.userId);
+  getMe(@CurrentUser() user: any) {
+    return user;
+  }
+  @Get('signout')
+  signOut(@Session() session: any) {
+    session.userId = null;
   }
   @Get()
   find(@Query('email') email: string) {

@@ -54,13 +54,10 @@ export class UsersController {
     if (users instanceof BadRequestException) {
       return users; // Return the BadRequestException if it was thrown
     }
-
-    // Assuming you want to access the first user
-
-    const userId = users.id;
-    session.userId = userId;
-    console.log('sessions', session);
-    return users;
+  }
+  @Get('me')
+  getMe(@Session() session: any) {
+    return this.usersserv.findOne(session.userId);
   }
   @Get()
   find(@Query('email') email: string) {

@@ -13,13 +13,14 @@ import { UsersService } from '../users.service';
 export class CurrentUserInterceptors implements NestInterceptor {
   constructor(private userService: UsersService) {}
   async intercept(context: ExecutionContext, handler: CallHandler) {
-    //handle out going responses
+    //handle  incoming request
     const request = context.switchToHttp().getRequest();
     const { userId } = request.session;
     if (userId) {
       const user = await this.userService.findOne(userId);
       request.currentUser = user;
     }
+    //jhandle outgoing responses
     return handler.handle();
   }
 }

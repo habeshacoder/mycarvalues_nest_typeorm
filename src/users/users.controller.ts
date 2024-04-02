@@ -16,7 +16,7 @@ import { serializer } from '../interceptors/serializer.interceptor';
 import { UserDto } from './dtos/users.dto';
 import { UsersService } from './users.service';
 import { UPdateUserDto } from './dtos/update-user.dro';
-import { GetUserDto } from 'src/users/dtos/get-user.dto';
+import { GetUserDto } from './dtos/get-user.dto';
 import { AuthService } from './auth.service';
 import { HEADERS_METADATA } from '@nestjs/common/constants';
 import { CurrentUser } from './decorators/current-use.decorator';
@@ -38,15 +38,9 @@ export class UsersController {
     const users = await this.authService.signUp(body.email, body.password);
 
     if (users instanceof BadRequestException) {
-      console.log('exception');
-      return users; // Return the BadRequestException if it was thrown
+      return users;
     }
-    console.log('create user', session);
-
     session.userId = users.id;
-    console.log('user id:', users.id);
-
-    console.log('create user', session);
 
     return users;
   }
@@ -56,6 +50,8 @@ export class UsersController {
     if (users instanceof BadRequestException) {
       return users; // Return the BadRequestException if it was thrown
     }
+    session.userId = users.id;
+
     return users;
   }
   @Get('me')

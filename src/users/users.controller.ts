@@ -11,8 +11,9 @@ import {
   Query,
   Session,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { serializer } from '../interceptors/serializer.interceptor';
+import { serializerInterceprots } from '../interceptors/serializer.interceptor';
 import { UserDto } from './dtos/users.dto';
 import { UsersService } from './users.service';
 import { UPdateUserDto } from './dtos/update-user.dro';
@@ -21,8 +22,10 @@ import { AuthService } from './auth.service';
 import { HEADERS_METADATA } from '@nestjs/common/constants';
 import { CurrentUser } from './decorators/current-use.decorator';
 import { AuthGuard } from './guards/auth.guard';
+import { CurrentUserInterceptors } from './interceptors/current-user.interceptor';
 @Controller('users')
-@serializer(GetUserDto)
+@serializerInterceprots(GetUserDto)
+// @UseInterceptors(CurrentUserInterceptors)
 export class UsersController {
   constructor(
     private usersserv: UsersService,
@@ -51,7 +54,6 @@ export class UsersController {
       return users; // Return the BadRequestException if it was thrown
     }
     session.userId = users.id;
-
     return users;
   }
   @Get('me')

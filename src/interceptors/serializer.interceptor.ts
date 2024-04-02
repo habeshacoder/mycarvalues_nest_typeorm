@@ -8,7 +8,7 @@ import { plainToClass } from 'class-transformer';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export function serializer(dto: any) {
+export function serializerInterceprots(dto: any) {
   return UseInterceptors(new SerializerInterceptor(dto));
 }
 
